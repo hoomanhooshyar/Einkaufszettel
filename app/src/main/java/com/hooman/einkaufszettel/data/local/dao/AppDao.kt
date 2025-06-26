@@ -7,6 +7,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.hooman.einkaufszettel.data.local.entity.BillEntity
 import com.hooman.einkaufszettel.data.local.entity.ShoppingItemEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface AppDao {
@@ -18,10 +19,10 @@ interface AppDao {
     suspend fun deleteBill(bill: BillEntity)
 
     @Query("SELECT * FROM billentity ORDER BY billDate DESC")
-    suspend fun getAllBills():List<BillEntity>
+    fun getAllBills(): Flow<List<BillEntity>>
 
     @Query("SELECT * FROM billentity WHERE id = :id LIMIT 1")
-    suspend fun getBillById(id:Long):BillEntity?
+    fun getBillById(id:Long):Flow<BillEntity?>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertShoppingItem(shoppingItemEntity: ShoppingItemEntity)
