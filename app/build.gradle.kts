@@ -1,17 +1,16 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    id("kotlin-kapt")
+    alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
     alias(libs.plugins.dagger)
     alias(libs.plugins.kotlinSerialization)
-    alias(libs.plugins.compose.compiler)
     id("com.google.gms.google-services")
 }
 
-kapt {
+/*kapt {
     correctErrorTypes = true
-}
+}*/
 
 android {
     namespace = "com.hooman.einkaufszettel"
@@ -37,11 +36,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "17"
     }
     buildFeatures {
         compose = true
@@ -55,7 +54,12 @@ android {
     }
 }
 
+hilt {
+    enableAggregatingTask = false
+}
+
 dependencies {
+
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -66,6 +70,7 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.material3.android)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
+
 
     // Import the Firebase BoM
     implementation(platform(libs.firebase.bom))
@@ -108,13 +113,14 @@ dependencies {
 
     //Room
     implementation (libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler)
 
 
     //Dagger - Hilt
     implementation (libs.hilt.android)
-    kapt (libs.hilt.android.compiler)
-    kapt (libs.androidx.hilt.compiler)
+    ksp (libs.hilt.android.compiler)
+    ksp (libs.androidx.hilt.compiler)
     implementation (libs.androidx.hilt.navigation.compose)
 
     //Data Store
@@ -153,7 +159,7 @@ dependencies {
 
     //Instrumentation test
     androidTestImplementation (libs.hilt.android.testing)
-    kaptAndroidTest (libs.hilt.android.compiler)
+    kspAndroidTest (libs.hilt.android.compiler)
     androidTestImplementation (libs.junit)
     androidTestImplementation (libs.kotlinx.coroutines.test)
     androidTestImplementation (libs.androidx.core.testing)

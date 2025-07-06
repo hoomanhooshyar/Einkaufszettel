@@ -5,7 +5,7 @@ import com.hooman.einkaufszettel.domain.model.ShoppingItem
 import com.hooman.einkaufszettel.domain.repository.AppRepository
 import kotlinx.coroutines.flow.Flow
 
-class InsertShoppingItemUseCase(
+class InsertShoppingItemToLocalUseCase(
     private val repository: AppRepository
 ) {
     suspend operator fun invoke(shoppingItem: ShoppingItem):Flow<Resource<Unit>>{

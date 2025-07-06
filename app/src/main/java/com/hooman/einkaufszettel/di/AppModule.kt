@@ -7,10 +7,10 @@ import com.hooman.einkaufszettel.data.repository.AppRepositoryImpl
 import com.hooman.einkaufszettel.domain.repository.AppRepository
 import com.hooman.einkaufszettel.domain.usecase.DeleteBillUseCase
 import com.hooman.einkaufszettel.domain.usecase.DeleteShoppingItemUseCase
-import com.hooman.einkaufszettel.domain.usecase.GetAllBillsUseCase
-import com.hooman.einkaufszettel.domain.usecase.GetBillByIdUseCase
-import com.hooman.einkaufszettel.domain.usecase.InsertBillUseCase
-import com.hooman.einkaufszettel.domain.usecase.InsertShoppingItemUseCase
+import com.hooman.einkaufszettel.domain.usecase.GetAllBillsFromLocalUseCase
+import com.hooman.einkaufszettel.domain.usecase.GetBillByIdFromLocalUseCase
+import com.hooman.einkaufszettel.domain.usecase.InsertBillToLocalUseCase
+import com.hooman.einkaufszettel.domain.usecase.InsertShoppingItemToLocalUseCase
 import com.hooman.einkaufszettel.presentation.util.internet_connection.NetworkConnectivityObserver
 import dagger.Module
 import dagger.Provides
@@ -41,20 +41,20 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideGetAllBillsUseCase(repository: AppRepository):GetAllBillsUseCase{
-        return GetAllBillsUseCase(repository)
+    fun provideGetAllBillsUseCase(repository: AppRepository):GetAllBillsFromLocalUseCase{
+        return GetAllBillsFromLocalUseCase(repository)
     }
 
     @Provides
     @Singleton
-    fun provideGetBillByIdUseCase(repository: AppRepository):GetBillByIdUseCase{
-        return GetBillByIdUseCase(repository)
+    fun provideGetBillByIdUseCase(repository: AppRepository):GetBillByIdFromLocalUseCase{
+        return GetBillByIdFromLocalUseCase(repository)
     }
 
     @Provides
     @Singleton
-    fun provideInsertBillUseCase(repository: AppRepository):InsertBillUseCase{
-        return InsertBillUseCase(repository)
+    fun provideInsertBillUseCase(repository: AppRepository):InsertBillToLocalUseCase{
+        return InsertBillToLocalUseCase(repository)
     }
 
     @Provides
@@ -65,8 +65,8 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideInsertShoppingItemUseCase(repository: AppRepository):InsertShoppingItemUseCase{
-        return InsertShoppingItemUseCase(repository)
+    fun provideInsertShoppingItemUseCase(repository: AppRepository):InsertShoppingItemToLocalUseCase{
+        return InsertShoppingItemToLocalUseCase(repository)
     }
 
     @Provides

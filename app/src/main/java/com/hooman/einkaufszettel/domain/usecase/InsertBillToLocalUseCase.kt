@@ -5,7 +5,7 @@ import com.hooman.einkaufszettel.domain.model.Bill
 import com.hooman.einkaufszettel.domain.repository.AppRepository
 import kotlinx.coroutines.flow.Flow
 
-class InsertBillUseCase(
+class InsertBillToLocalUseCase(
     private val repository: AppRepository
 ) {
     suspend operator fun invoke(bill: Bill):Flow<Resource<Unit>>{

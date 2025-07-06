@@ -5,7 +5,7 @@ import com.hooman.einkaufszettel.domain.model.Bill
 import com.hooman.einkaufszettel.domain.repository.AppRepository
 import kotlinx.coroutines.flow.Flow
 
-class GetAllBillsUseCase(
+class GetAllBillsFromLocalUseCase(
     private val repository: AppRepository
 ) {
     operator fun invoke():Flow<Resource<List<Bill>>>{

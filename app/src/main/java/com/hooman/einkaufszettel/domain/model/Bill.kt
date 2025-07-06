@@ -8,14 +8,14 @@ import java.util.Date
 data class Bill(
     val id:Long,
     val billDate: Date,
-    val items:List<ShoppingItem>
+    val items: List<ShoppingItem>
 ){
     fun toBillEntity():BillEntity {
-        val itemsJson = Gson().toJson(items)
+
         return BillEntity(
             id = id,
             billDate = billDate,
-            itemsJson = itemsJson
+
         )
     }
 }
