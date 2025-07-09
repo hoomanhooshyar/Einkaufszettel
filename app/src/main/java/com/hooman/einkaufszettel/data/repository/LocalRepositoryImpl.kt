@@ -5,14 +5,12 @@ import com.hooman.einkaufszettel.data.local.dao.AppDao
 import com.hooman.einkaufszettel.data.mapper.toBill
 import com.hooman.einkaufszettel.domain.model.Bill
 import com.hooman.einkaufszettel.domain.model.ShoppingItem
-import com.hooman.einkaufszettel.domain.repository.AppRepository
+import com.hooman.einkaufszettel.domain.repository.LocalRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onStart
 
-class AppRepositoryImpl(private val dao: AppDao) : AppRepository {
+class LocalRepositoryImpl(private val dao: AppDao) : LocalRepository {
     override fun getAllBills(): Flow<Resource<List<Bill>>> = flow {
         emit(Resource.Loading())
         dao.getAllBills()
@@ -82,4 +80,12 @@ class AppRepositoryImpl(private val dao: AppDao) : AppRepository {
                 emit(Resource.Error(message = e.message!!))
             }
         }
+
+    override suspend fun uploadBillToFirebase(bill: Bill): Flow<Resource<Unit>> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getAllBillsFromFirebase(): Flow<Resource<List<Bill>>> {
+        TODO("Not yet implemented")
+    }
 }

@@ -5,7 +5,7 @@ import com.hooman.einkaufszettel.domain.model.Bill
 import com.hooman.einkaufszettel.domain.model.ShoppingItem
 import kotlinx.coroutines.flow.Flow
 
-interface AppRepository {
+interface LocalRepository {
 
     fun getAllBills():Flow<Resource<List<Bill>>>
 
@@ -18,4 +18,8 @@ interface AppRepository {
     suspend fun insertShoppingItem(shoppingItem: ShoppingItem):Flow<Resource<Unit>>
 
     suspend fun deleteShoppingItem(shoppingItem: ShoppingItem):Flow<Resource<Unit>>
+
+    suspend fun uploadBillToFirebase(bill: Bill):Flow<Resource<Unit>>
+
+    fun getAllBillsFromFirebase():Flow<Resource<List<Bill>>>
 }

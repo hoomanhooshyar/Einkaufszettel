@@ -7,8 +7,9 @@ import androidx.lifecycle.viewModelScope
 import com.hooman.einkaufszettel.core.util.Resource
 import com.hooman.einkaufszettel.domain.model.Bill
 import com.hooman.einkaufszettel.domain.model.ShoppingItem
-import com.hooman.einkaufszettel.domain.usecase.DeleteBillUseCase
+import com.hooman.einkaufszettel.domain.usecase.DeleteBillFromLocalUseCase
 import com.hooman.einkaufszettel.domain.usecase.GetAllBillsFromLocalUseCase
+import com.hooman.einkaufszettel.domain.usecase.GetAllBillsFromRemoteUseCase
 import com.hooman.einkaufszettel.domain.usecase.InsertBillToLocalUseCase
 import com.hooman.einkaufszettel.domain.usecase.InsertShoppingItemToLocalUseCase
 import com.hooman.einkaufszettel.presentation.util.internet_connection.ConnectivityObserver
@@ -23,42 +24,53 @@ import javax.inject.Inject
 @HiltViewModel
 class ManageBillsViewModel @Inject constructor(
     private val getAllBillsFromLocalUseCase: GetAllBillsFromLocalUseCase,
-    private val deleteBillUseCase: DeleteBillUseCase,
+    private val getAllBillsFromRemoteUseCase: GetAllBillsFromRemoteUseCase,
+    private val deleteBillUseCase: DeleteBillFromLocalUseCase,
     private val insertShoppingItemUseCase: InsertShoppingItemToLocalUseCase,
     private val insertBillToLocalUseCase: InsertBillToLocalUseCase,
     private val connectivityObserver: ConnectivityObserver
-):ViewModel() {
+) : ViewModel() {
     private val _stateBill = mutableStateOf(ManageBillState())
 
-    val stateBill:State<ManageBillState> = _stateBill
+    val stateBill: State<ManageBillState> = _stateBill
 
     private val _stateShoppingItem = mutableStateOf(ManageShoppingItemState())
-    val stateShoppingItem:State<ManageShoppingItemState> = _stateShoppingItem
+    val stateShoppingItem: State<ManageShoppingItemState> = _stateShoppingItem
 
     private val _status = MutableStateFlow(Status.Unavailable)
-    val status:MutableStateFlow<Status> get() = _status
+    val status: MutableStateFlow<Status> get() = _status
 
 
     init {
         networkConnectionCheck()
     }
 
-    private fun networkConnectionCheck(){
+    private fun networkConnectionCheck() {
         viewModelScope.launch {
-            connectivityObserver.observe().collect{ newStatus ->
+            connectivityObserver.observe().collect { newStatus ->
                 _status.value = newStatus
-                if(_status.value == Status.Available){
-                    //Call Get All Bills From Firebase Method
-                }else{
+                if (_status.value == Status.Available) {
+                    getAllBillsFromRemote()
+                } else {
                     getAllBillsFromLocal()
                 }
             }
         }
     }
 
-    fun getAllBillsFromLocal(){
+    fun getAllBillsFromLocal() {
         viewModelScope.launch {
-            getAllBillsFromLocalUseCase().collect{ result ->
+            getAllBillsFromLocalUseCase().collect { result ->
+                withContext(Dispatchers.Main) {
+                    handleResult(result)
+                }
+            }
+        }
+    }
+
+    fun getAllBillsFromRemote(){
+        viewModelScope.launch {
+            getAllBillsFromRemoteUseCase().collect{result ->
                 withContext(Dispatchers.Main){
                     handleResult(result)
                 }
@@ -66,11 +78,11 @@ class ManageBillsViewModel @Inject constructor(
         }
     }
 
-    fun insertBill(bill: Bill){
+    fun insertBill(bill: Bill) {
         viewModelScope.launch {
-            insertBillToLocalUseCase(bill).collect{ result ->
+            insertBillToLocalUseCase(bill).collect { result ->
                 _stateBill.value =
-                    when(result){
+                    when (result) {
                         is Resource.Loading -> {
                             _stateBill.value.copy(
                                 isLoading = true,
@@ -99,11 +111,11 @@ class ManageBillsViewModel @Inject constructor(
         }
     }
 
-    fun insertShoppingItem(shoppingItem: ShoppingItem){
+    fun insertShoppingItem(shoppingItem: ShoppingItem) {
         viewModelScope.launch {
-            insertShoppingItemUseCase(shoppingItem).collect{result ->
+            insertShoppingItemUseCase(shoppingItem).collect { result ->
                 _stateShoppingItem.value =
-                    when(result){
+                    when (result) {
                         is Resource.Loading -> {
                             _stateShoppingItem.value.copy(
                                 isLoading = true,
@@ -111,6 +123,7 @@ class ManageBillsViewModel @Inject constructor(
                                 insertShoppingItemError = null
                             )
                         }
+
                         is Resource.Success -> {
                             _stateShoppingItem.value.copy(
                                 isLoading = false,
@@ -118,6 +131,7 @@ class ManageBillsViewModel @Inject constructor(
                                 insertShoppingItemError = null
                             )
                         }
+
                         is Resource.Error -> {
                             _stateShoppingItem.value.copy(
                                 isLoading = false,
@@ -130,7 +144,7 @@ class ManageBillsViewModel @Inject constructor(
         }
     }
 
-    fun clearBillInsertStatus(){
+    fun clearBillInsertStatus() {
         _stateBill.value = _stateBill.value.copy(
             isLoading = false,
             insertBillSuccess = false,
@@ -138,7 +152,7 @@ class ManageBillsViewModel @Inject constructor(
         )
     }
 
-    fun clearShoppingItemInsertStatus(){
+    fun clearShoppingItemInsertStatus() {
         _stateShoppingItem.value = _stateShoppingItem.value.copy(
             isLoading = false,
             insertShoppingItemSuccess = false,
@@ -147,19 +161,21 @@ class ManageBillsViewModel @Inject constructor(
     }
 
     private fun handleResult(result: Resource<List<Bill>>) {
-        when(result){
+        when (result) {
             is Resource.Success -> {
                 _stateBill.value = _stateBill.value.copy(
                     allBills = result.data ?: emptyList(),
                     isLoading = false
                 )
             }
+
             is Resource.Loading -> {
                 _stateBill.value = _stateBill.value.copy(
                     allBills = result.data ?: emptyList(),
                     isLoading = true
                 )
             }
+
             is Resource.Error -> {
                 _stateBill.value = _stateBill.value.copy(
                     allBills = result.data ?: emptyList(),
