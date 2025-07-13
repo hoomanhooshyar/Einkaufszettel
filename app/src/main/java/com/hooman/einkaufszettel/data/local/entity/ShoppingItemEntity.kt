@@ -4,7 +4,6 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import com.hooman.einkaufszettel.domain.model.ShoppingItem
 
 @Entity(
     tableName = "shopping_items",
@@ -14,27 +13,20 @@ import com.hooman.einkaufszettel.domain.model.ShoppingItem
             parentColumns = ["id"],
             childColumns = ["billId"],
             onDelete = ForeignKey.CASCADE
+        ),
+        ForeignKey(
+            entity = ProductEntity::class,
+            parentColumns = ["id"],
+            childColumns = ["productId"],
+            onDelete = ForeignKey.CASCADE
         )
     ],
-    indices = [Index(value = ["billId"])]
-    )
+    indices = [Index(value = ["billId"]), Index(value = ["productId"])]
+)
 data class ShoppingItemEntity(
     @PrimaryKey(autoGenerate = false)
-    val id:String,
-    val billId:Long,
-    val itemName:String,
-    val itemCount:Int,
-    val price:Double,
-    val image:String
-){
-    fun toShoppingItem():ShoppingItem {
-        return ShoppingItem(
-            id = id,
-            billId = billId,
-            itemName = itemName,
-            itemCount = itemCount,
-            price = price,
-            image = image
-        )
-    }
-}
+    val id: String,
+    val billId: Long,
+    val productId:Long,
+    val itemCount: Int,
+)

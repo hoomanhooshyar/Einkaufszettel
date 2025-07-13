@@ -1,0 +1,22 @@
+package com.hooman.einkaufszettel.data.mapper
+
+import com.hooman.einkaufszettel.data.local.relation.BillWithItemsAndProducts
+import com.hooman.einkaufszettel.domain.model.Bill
+import com.hooman.einkaufszettel.domain.model.ShoppingItem
+
+fun BillWithItemsAndProducts.toDomain(): Bill {
+    return Bill(
+        id = bill.id,
+        billDate = bill.billDate,
+        items = items.map { shoppingItemWithProduct ->
+            ShoppingItem(
+                id = shoppingItemWithProduct.shoppingItem.id,
+                productId = shoppingItemWithProduct.product.id,
+                productName = shoppingItemWithProduct.product.name,
+                itemCount = shoppingItemWithProduct.shoppingItem.itemCount,
+                productPrice = shoppingItemWithProduct.product.price,
+                productImage = shoppingItemWithProduct.product.image
+            )
+        }
+    )
+}

@@ -4,20 +4,20 @@ import com.hooman.einkaufszettel.data.local.entity.ShoppingItemEntity
 
 data class ShoppingItem(
     val id:String,
-    val billId:Long,
-    val itemName:String,
+    val productId:Long,
     val itemCount:Int,
-    val price:Double,
-    val image:String
+    val productName:String,
+    val productPrice:Double,
+    val productImage:String?
+
 ){
-    fun toShoppingItemEntity():ShoppingItemEntity{
+    fun toShoppingItemEntity(billId:Long):ShoppingItemEntity{
         return ShoppingItemEntity(
             id = id,
             billId = billId,
-            itemName = itemName,
+            productId = productId,
             itemCount = itemCount,
-            price = price,
-            image = image
+
         )
     }
 }

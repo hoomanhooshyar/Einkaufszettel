@@ -6,10 +6,11 @@ import androidx.room.TypeConverters
 import com.hooman.einkaufszettel.data.local.converter.Converters
 import com.hooman.einkaufszettel.data.local.dao.AppDao
 import com.hooman.einkaufszettel.data.local.entity.BillEntity
+import com.hooman.einkaufszettel.data.local.entity.ProductEntity
 import com.hooman.einkaufszettel.data.local.entity.ShoppingItemEntity
 
 @Database(
-    entities = [BillEntity::class,ShoppingItemEntity::class],
+    entities = [BillEntity::class,ShoppingItemEntity::class,ProductEntity::class],
     version = 1
 )
 @TypeConverters(Converters::class)

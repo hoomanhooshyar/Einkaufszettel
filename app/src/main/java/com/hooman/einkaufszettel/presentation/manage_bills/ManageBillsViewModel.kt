@@ -111,9 +111,9 @@ class ManageBillsViewModel @Inject constructor(
         }
     }
 
-    fun insertShoppingItem(shoppingItem: ShoppingItem) {
+    fun insertShoppingItem(shoppingItem: ShoppingItem,billId:Long) {
         viewModelScope.launch {
-            insertShoppingItemUseCase(shoppingItem).collect { result ->
+            insertShoppingItemUseCase(shoppingItem,billId).collect { result ->
                 _stateShoppingItem.value =
                     when (result) {
                         is Resource.Loading -> {

@@ -2,8 +2,6 @@ package com.hooman.einkaufszettel.data.local.converter
 
 import androidx.room.TypeConverter
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import com.hooman.einkaufszettel.data.local.entity.ShoppingItemEntity
 import java.util.Date
 
 class Converters {
