@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 interface FirebaseBillRepository {
     suspend fun insertBill(bill: Bill):Flow<Resource<Unit>>
 
-    suspend fun getAllBills():Flow<Resource<List<Bill>>>
+    suspend fun getAllBillsByUserId(userId:String):Flow<Resource<List<Bill>>>
 
     suspend fun getBillById(billId:String):Flow<Resource<List<Bill>>>
 

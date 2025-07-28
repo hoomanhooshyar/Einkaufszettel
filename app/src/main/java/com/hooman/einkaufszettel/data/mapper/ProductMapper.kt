@@ -8,7 +8,7 @@ fun Product.toProductEntity():ProductEntity{
         id = id,
         name = name,
         image = image,
-        price = price
+        price = price,
     )
 }
 
@@ -17,6 +17,7 @@ fun ProductEntity.toProduct():Product{
         id = id,
         name = name,
         image = image,
-        price = price
+        price = price,
+        userId = ""
     )
 }

@@ -11,6 +11,8 @@ fun ShoppingItemEntity.toShoppingItem(product:ProductEntity):ShoppingItem{
         itemCount = itemCount,
         productName = product.name,
         productPrice = product.price,
-        productImage = product.image
+        productImage = product.image,
+        userId = "",
+        billId = billId
     )
 }

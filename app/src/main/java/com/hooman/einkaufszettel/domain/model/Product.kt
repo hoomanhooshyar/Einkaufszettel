@@ -6,7 +6,8 @@ data class Product(
     val id:Long,
     val name:String,
     val image:String?,
-    val price:Double
+    val price:Double,
+    val userId:String
 ){
     fun toProductEntity():ProductEntity{
         return ProductEntity(

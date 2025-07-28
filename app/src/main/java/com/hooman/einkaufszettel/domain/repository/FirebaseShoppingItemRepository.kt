@@ -8,7 +8,7 @@ interface FirebaseShoppingItemRepository {
 
     suspend fun insertShoppingItem(shoppingItem: ShoppingItem):Flow<Resource<Unit>>
 
-    suspend fun getAllShoppingItems():Flow<Resource<List<ShoppingItem>>>
+    suspend fun getAllShoppingItemsByUserId(userId:String):Flow<Resource<List<ShoppingItem>>>
 
     suspend fun deleteShoppingItem(itemId:String):Flow<Resource<Unit>>
 

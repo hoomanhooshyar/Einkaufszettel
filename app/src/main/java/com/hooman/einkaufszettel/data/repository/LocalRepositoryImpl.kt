@@ -68,7 +68,7 @@ class LocalRepositoryImpl(private val dao: AppDao) : LocalRepository {
         flow {
             emit(Resource.Loading())
             try {
-                dao.insertShoppingItem(shoppingItem.toShoppingItemEntity(billId))
+                dao.insertShoppingItem(shoppingItem.toShoppingItemEntity())
                 emit(Resource.Success(data = Unit))
             } catch (e: Exception) {
                 emit(Resource.Error(message = e.message!!))
@@ -82,7 +82,7 @@ class LocalRepositoryImpl(private val dao: AppDao) : LocalRepository {
         flow {
             emit(Resource.Loading())
             try {
-                dao.deleteShoppingItem(shoppingItem.toShoppingItemEntity(billId))
+                dao.deleteShoppingItem(shoppingItem.toShoppingItemEntity())
                 emit(Resource.Success(data = Unit))
             } catch (e: Exception) {
                 emit(Resource.Error(message = e.message!!))

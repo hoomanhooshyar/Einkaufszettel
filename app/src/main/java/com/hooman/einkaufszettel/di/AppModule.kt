@@ -4,10 +4,11 @@ import android.app.Application
 import androidx.room.Room
 import com.google.firebase.firestore.FirebaseFirestore
 import com.hooman.einkaufszettel.data.local.db.AppDatabase
-import com.hooman.einkaufszettel.data.remote.FirebaseBillDataSource
-import com.hooman.einkaufszettel.data.remote.FirebaseProductDataSource
-import com.hooman.einkaufszettel.data.remote.FirebaseService
-import com.hooman.einkaufszettel.data.remote.FirebaseShoppingItemDataSource
+import com.hooman.einkaufszettel.data.remote.FirebaseBillDataSourceImpl
+import com.hooman.einkaufszettel.data.remote.FirebaseProductDataSourceImpl
+import com.hooman.einkaufszettel.domain.source.FirebaseService
+import com.hooman.einkaufszettel.data.remote.FirebaseServiceImpl
+import com.hooman.einkaufszettel.data.remote.FirebaseShoppingItemDataSourceImpl
 import com.hooman.einkaufszettel.data.repository.FirebaseBillRepositoryImpl
 import com.hooman.einkaufszettel.data.repository.FirebaseShoppingItemRepositoryImpl
 import com.hooman.einkaufszettel.data.repository.LocalRepositoryImpl
@@ -15,6 +16,9 @@ import com.hooman.einkaufszettel.domain.repository.FirebaseBillRepository
 import com.hooman.einkaufszettel.domain.repository.FirebaseProductRepository
 import com.hooman.einkaufszettel.domain.repository.FirebaseShoppingItemRepository
 import com.hooman.einkaufszettel.domain.repository.LocalRepository
+import com.hooman.einkaufszettel.domain.source.FirebaseBillDataSource
+import com.hooman.einkaufszettel.domain.source.FirebaseProductDataSource
+import com.hooman.einkaufszettel.domain.source.FirebaseShoppingItemDataSource
 import com.hooman.einkaufszettel.domain.usecase.DeleteBillFromLocalUseCase
 import com.hooman.einkaufszettel.domain.usecase.DeleteBillFromRemoteUseCase
 import com.hooman.einkaufszettel.domain.usecase.DeleteProductFromLocalUseCase
@@ -22,10 +26,10 @@ import com.hooman.einkaufszettel.domain.usecase.DeleteProductFromRemoteUseCase
 import com.hooman.einkaufszettel.domain.usecase.DeleteShoppingItemFromLocalUseCase
 import com.hooman.einkaufszettel.domain.usecase.DeleteShoppingItemFromRemoteUseCase
 import com.hooman.einkaufszettel.domain.usecase.GetAllBillsFromLocalUseCase
-import com.hooman.einkaufszettel.domain.usecase.GetAllBillsFromRemoteUseCase
+import com.hooman.einkaufszettel.domain.usecase.GetAllBillsByUserIdFromRemoteUseCase
 import com.hooman.einkaufszettel.domain.usecase.GetAllProductsFromLocalUseCase
-import com.hooman.einkaufszettel.domain.usecase.GetAllProductsFromRemoteUseCase
-import com.hooman.einkaufszettel.domain.usecase.GetAllShoppingItemsFromRemoteUseCase
+import com.hooman.einkaufszettel.domain.usecase.GetAllProductsByUserIdFromRemoteUseCase
+import com.hooman.einkaufszettel.domain.usecase.GetAllShoppingItemsByUserIdFromRemoteUseCase
 import com.hooman.einkaufszettel.domain.usecase.GetBillByIdFromLocalUseCase
 import com.hooman.einkaufszettel.domain.usecase.GetBillByIdFromRemoteUseCase
 import com.hooman.einkaufszettel.domain.usecase.GetProductByIdFromLocalUseCase
@@ -62,13 +66,13 @@ object AppModule {
     @Provides
     @Singleton
     fun provideFirebaseBillRepository(
-        dataSource:FirebaseBillDataSource
+        dataSource:FirebaseBillDataSourceImpl
     ):FirebaseBillRepository = FirebaseBillRepositoryImpl(dataSource)
 
     @Provides
     @Singleton
     fun provideFirebaseShoppingItemRepository(
-        dataSource: FirebaseShoppingItemDataSource
+        dataSource: FirebaseShoppingItemDataSourceImpl
     ):FirebaseShoppingItemRepository = FirebaseShoppingItemRepositoryImpl(dataSource)
 
     @Provides
@@ -79,6 +83,8 @@ object AppModule {
             .build()
     }
 
+    /*****Use cases*****/
+    //Local use cases
     @Provides
     @Singleton
     fun provideGetAllBillsUseCase(repository: LocalRepository):GetAllBillsFromLocalUseCase{
@@ -145,6 +151,8 @@ object AppModule {
         return DeleteProductFromLocalUseCase(repository)
     }
 
+    //Remote use cases
+
     @Provides
     @Singleton
     fun provideDeleteBillFromRemoteUseCase(repository: FirebaseBillRepository):DeleteBillFromRemoteUseCase{
@@ -159,8 +167,8 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideGetAllBillsFromRemoteUseCase(repository: FirebaseBillRepository):GetAllBillsFromRemoteUseCase{
-        return GetAllBillsFromRemoteUseCase(repository)
+    fun provideGetAllBillsByUserIdFromRemoteUseCase(repository: FirebaseBillRepository):GetAllBillsByUserIdFromRemoteUseCase{
+        return GetAllBillsByUserIdFromRemoteUseCase(repository)
     }
 
     @Provides
@@ -171,8 +179,8 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideGetAllShoppingItemFromRemoteUseCase(repository: FirebaseShoppingItemRepository):GetAllShoppingItemsFromRemoteUseCase{
-        return GetAllShoppingItemsFromRemoteUseCase(repository)
+    fun provideGetAllShoppingItemByUserIdFromRemoteUseCase(repository: FirebaseShoppingItemRepository):GetAllShoppingItemsByUserIdFromRemoteUseCase{
+        return GetAllShoppingItemsByUserIdFromRemoteUseCase(repository)
     }
 
     @Provides
@@ -201,8 +209,8 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideGetAllProductsFromRemoteUseCase(repository: FirebaseProductRepository):GetAllProductsFromRemoteUseCase{
-        return GetAllProductsFromRemoteUseCase(repository)
+    fun provideGetAllProductsByUserIdFromRemoteUseCase(repository: FirebaseProductRepository):GetAllProductsByUserIdFromRemoteUseCase{
+        return GetAllProductsByUserIdFromRemoteUseCase(repository)
     }
 
     @Provides
@@ -222,6 +230,9 @@ object AppModule {
     fun provideDeleteProductFromRemoteUseCase(repository: FirebaseProductRepository):DeleteProductFromRemoteUseCase{
         return DeleteProductFromRemoteUseCase(repository)
     }
+    /*******End of use cases******/
+
+
 
     @Provides
     @Singleton
@@ -239,25 +250,25 @@ object AppModule {
     @Singleton
     fun provideFirebaseService(
         firestore: FirebaseFirestore
-    ):FirebaseService = FirebaseService(firestore)
+    ): FirebaseService = FirebaseServiceImpl(firestore)
 
     @Provides
     @Singleton
     fun provideFirebaseBillDataSource(
         service: FirebaseService
-    ):FirebaseBillDataSource = FirebaseBillDataSource(service)
+    ):FirebaseBillDataSource = FirebaseBillDataSourceImpl(service)
 
     @Provides
     @Singleton
     fun provideFirebaseShoppingItemDataSource(
         service: FirebaseService
-    ):FirebaseShoppingItemDataSource = FirebaseShoppingItemDataSource(service)
+    ):FirebaseShoppingItemDataSource = FirebaseShoppingItemDataSourceImpl(service)
 
     @Provides
     @Singleton
     fun provideFirebaseProductDataSource(
         service: FirebaseService
-    ):FirebaseProductDataSource = FirebaseProductDataSource(service)
+    ):FirebaseProductDataSource = FirebaseProductDataSourceImpl(service)
 
 
 

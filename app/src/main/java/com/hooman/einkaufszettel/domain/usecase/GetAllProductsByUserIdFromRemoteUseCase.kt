@@ -5,10 +5,10 @@ import com.hooman.einkaufszettel.domain.model.Product
 import com.hooman.einkaufszettel.domain.repository.FirebaseProductRepository
 import kotlinx.coroutines.flow.Flow
 
-class GetAllProductsFromRemoteUseCase(
+class GetAllProductsByUserIdFromRemoteUseCase(
     private val repository: FirebaseProductRepository
 ) {
-    suspend operator fun invoke():Flow<Resource<List<Product>>>{
-        return repository.getAllProducts()
+    suspend operator fun invoke(userId:String):Flow<Resource<List<Product>>>{
+        return repository.getAllProductsByUserId(userId)
     }
 }

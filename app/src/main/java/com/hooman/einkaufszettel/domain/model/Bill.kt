@@ -8,7 +8,8 @@ import java.util.Date
 data class Bill(
     val id:Long,
     val billDate: Date,
-    val items: List<ShoppingItem>
+    val items: List<ShoppingItem>,
+    val userId:String
 ){
     fun toBillEntity():BillEntity {
 

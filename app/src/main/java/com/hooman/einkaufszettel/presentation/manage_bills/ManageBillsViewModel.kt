@@ -9,7 +9,7 @@ import com.hooman.einkaufszettel.domain.model.Bill
 import com.hooman.einkaufszettel.domain.model.ShoppingItem
 import com.hooman.einkaufszettel.domain.usecase.DeleteBillFromLocalUseCase
 import com.hooman.einkaufszettel.domain.usecase.GetAllBillsFromLocalUseCase
-import com.hooman.einkaufszettel.domain.usecase.GetAllBillsFromRemoteUseCase
+import com.hooman.einkaufszettel.domain.usecase.GetAllBillsByUserIdFromRemoteUseCase
 import com.hooman.einkaufszettel.domain.usecase.InsertBillToLocalUseCase
 import com.hooman.einkaufszettel.domain.usecase.InsertShoppingItemToLocalUseCase
 import com.hooman.einkaufszettel.presentation.util.internet_connection.ConnectivityObserver
@@ -24,7 +24,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ManageBillsViewModel @Inject constructor(
     private val getAllBillsFromLocalUseCase: GetAllBillsFromLocalUseCase,
-    private val getAllBillsFromRemoteUseCase: GetAllBillsFromRemoteUseCase,
+    private val getAllBillsFromRemoteByUserIdUseCase: GetAllBillsByUserIdFromRemoteUseCase,
     private val deleteBillUseCase: DeleteBillFromLocalUseCase,
     private val insertShoppingItemUseCase: InsertShoppingItemToLocalUseCase,
     private val insertBillToLocalUseCase: InsertBillToLocalUseCase,
@@ -50,7 +50,7 @@ class ManageBillsViewModel @Inject constructor(
             connectivityObserver.observe().collect { newStatus ->
                 _status.value = newStatus
                 if (_status.value == Status.Available) {
-                    getAllBillsFromRemote()
+                    //getAllBillsFromRemote()
                 } else {
                     getAllBillsFromLocal()
                 }
@@ -68,9 +68,9 @@ class ManageBillsViewModel @Inject constructor(
         }
     }
 
-    fun getAllBillsFromRemote(){
+    fun getAllBillsFromRemote(userId:String){
         viewModelScope.launch {
-            getAllBillsFromRemoteUseCase().collect{result ->
+            getAllBillsFromRemoteByUserIdUseCase(userId).collect{result ->
                 withContext(Dispatchers.Main){
                     handleResult(result)
                 }

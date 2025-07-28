@@ -8,6 +8,7 @@ fun BillWithItemsAndProducts.toDomain(): Bill {
     return Bill(
         id = bill.id,
         billDate = bill.billDate,
+        userId = "",
         items = items.map { shoppingItemWithProduct ->
             ShoppingItem(
                 id = shoppingItemWithProduct.shoppingItem.id,
@@ -15,7 +16,9 @@ fun BillWithItemsAndProducts.toDomain(): Bill {
                 productName = shoppingItemWithProduct.product.name,
                 itemCount = shoppingItemWithProduct.shoppingItem.itemCount,
                 productPrice = shoppingItemWithProduct.product.price,
-                productImage = shoppingItemWithProduct.product.image
+                productImage = shoppingItemWithProduct.product.image,
+                billId = bill.id,
+                userId = ""
             )
         }
     )

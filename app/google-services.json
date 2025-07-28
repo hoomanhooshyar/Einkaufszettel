@@ -12,7 +12,20 @@
           "package_name": "com.hooman.einkaufszettel"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "415842922582-hq87rapcp4u3s2h8frqq0f8nfga2ghqh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hooman.einkaufszettel",
+            "certificate_hash": "3d9e6bf7c8fac26697e5c5740ec8361c03fbccbc"
+          }
+        },
+        {
+          "client_id": "415842922582-6bc3hkuciq9fpaeff6n79cofguc9ij1b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAkYo_5YmnHNoQMeO9sDyQDxKWfHDP9WSw"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "415842922582-6bc3hkuciq9fpaeff6n79cofguc9ij1b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

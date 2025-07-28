@@ -10,5 +10,5 @@ data class ProductEntity(
     val id:Long = 0L,
     val name:String,
     val image:String?,
-    val price:Double
+    val price:Double,
 )

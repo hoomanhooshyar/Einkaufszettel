@@ -8,7 +8,7 @@ interface FirebaseProductRepository {
 
     suspend fun insertProduct(product: Product):Flow<Resource<Unit>>
 
-    suspend fun getAllProducts():Flow<Resource<List<Product>>>
+    suspend fun getAllProductsByUserId(userId:String):Flow<Resource<List<Product>>>
 
     suspend fun getProductByName(name:String):Flow<Resource<List<Product>>>
 

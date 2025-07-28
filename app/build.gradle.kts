@@ -75,6 +75,9 @@ dependencies {
     // Import the Firebase BoM
     implementation(platform(libs.firebase.bom))
 
+    //Firebase Authentication
+    implementation(libs.firebase.auth)
+
     // When using the BoM, don't specify versions in Firebase dependencies
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.firestore)
